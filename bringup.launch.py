@@ -20,6 +20,7 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.conditions import IfCondition, UnlessCondition
 
+
 def generate_launch_description():
     sensors_launch_path = PathJoinSubstitution(
         [FindPackageShare('linorobot2_bringup'), 'launch', 'sensors.launch.py']
@@ -143,27 +144,23 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(custom_robot_launch_path),
             condition=IfCondition(LaunchConfiguration("custom_robot")),
         ),
-        
         Node(
             package='mylidar',
             executable='random_test',
             name='random_package',
             output='screen',
         ),
-        
         Node(
             package='mylidar',
             executable='lidaramr2',
             name='relidar1',
             output='screen'
         ),
-        
-        # Add micro-ROS agent node for USB0
         Node(
             package='micro_ros_agent',
             executable='micro_ros_agent',
-            name='micro_ros_agent_node_usb0',
+            name='micro_ros_agent',
             output='screen',
-            arguments=['serial', '--dev', '/dev/ttyUSB0'],
-        )
+            arguments=['serial', '--dev', '/dev/ttyUSB0']
+        ),
     ])
